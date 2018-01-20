@@ -63,7 +63,7 @@ void MainWindow::initUI()
     ui->historyTable->setModel(model.get());
 }
 
-void MainWindow::numberButtonRespond(QString number)
+void MainWindow::numberButtonRespond(const QString& number)
 {
     if (!inputStarted)
     {
@@ -95,13 +95,13 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
         switch(keyEvent->key())
         {
+         case Qt::Key_C: cancelButtonRespond(); return true;
          case Qt::Key_Plus: plusButtonRespond(); return true;
          case Qt::Key_Minus: minusButtonRespond(); return true;
          case Qt::Key_Enter:
          case Qt::Key_Equal:
          case Qt::Key_Return: if(inputStarted) equalButtonRespond(); return true;
          case Qt::Key_Backspace: removeDigit(1); return true;
-         case Qt::Key_C: cancelButtonRespond();
 
          case Qt::Key_0: emit ui->Button0->clicked(true); return true;
          case Qt::Key_1: emit ui->Button1->clicked(true); return true;

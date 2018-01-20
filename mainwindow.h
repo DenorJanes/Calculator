@@ -56,7 +56,7 @@ private:
     Command* getOperation(COMMAND_TYPE operation);
 
 public slots:
-    void numberButtonRespond(QString number);
+    void numberButtonRespond(const QString& number);
     void plusButtonRespond();
     void minusButtonRespond();
     void equalButtonRespond();
