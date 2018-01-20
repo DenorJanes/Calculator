@@ -20,7 +20,7 @@ public:
     QString getOperationSymbol() { return operationParts[2]; }
     QString getOperationResult() {return operationParts[3]; }
 
-    QString getInfoAt(const int position);
+    const QString getInfoAt(const int position) const;
 
     void setOperationResult(const long long& result);
     void setOperationResult(const QString& result);

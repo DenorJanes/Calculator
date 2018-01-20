@@ -33,18 +33,26 @@ private:
     unique_ptr<HistoryTableModel> model;
     ArithmeticUnit arithmeticUnit;
 
-    static bool operationClicked;
-    bool init;
+    bool operationClicked = false;
+    bool inputStarted;
 
     bool eventFilter(QObject *watched, QEvent *event) override;
 
     void removeDigit(int length);
-    void resetCalculator();
     void enableButtons(bool flag);
-    void processButton();
+
+    void resetCalculator();
     void initConnections();
+    void initUI();
+
+    void calculate();
+
+    void processButton();
+    void processOperation();
+    void processFirstInput();
+
     bool isNumberCorrect();
-    void storeHistory();
+
     Command* getOperation(COMMAND_TYPE operation);
 
 public slots:

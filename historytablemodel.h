@@ -2,8 +2,7 @@
 #define HISTORYTABLEMODEL_H
 
 #include <QAbstractTableModel>
-
-class OperationInfo;
+#include "operationinfo.h"
 
 using std::vector;
 
@@ -23,7 +22,7 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    bool insertOperationRecord(OperationInfo&& operationInfo);
+    void insertOperationRecord(OperationInfo&& operationInfo);
 
 private:
     vector<OperationInfo> operationInfoSet;
