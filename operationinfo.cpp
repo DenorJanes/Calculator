@@ -1,29 +1,76 @@
 #include "operationinfo.h"
 #include "command.h"
 #include "arithmeticunit.h"
+#include <QDataStream>
+#include <assert.h>
 
-OperationInfo::OperationInfo(ArithmeticUnit& arithmeticUnit, Command& operation):
-    operationParts{ (QString::number(arithmeticUnit.getResult())),
-                    (QString(operation.getSymbol())),
-                    (QString::number(operation.getOperand())),
-                    (QString("No inforamtion about the result!"))
-                  }
-{}
+OperationInfo::OperationInfo(ArithmeticUnit& arithmeticUnit, Command& operation)
+{
+    leftOperand = arithmeticUnit.getResult();
+    rightOperand = operation.getOperand();
+    operationSymbol = operation.getSymbol();
+
+    initializedResult = false;
+}
 
 const QString OperationInfo::getInfoAt(int position) const
 {
-    if(position < 0 || position > 3)
-        return QString("No information at this position!");
-
-    return operationParts[position];
+    switch (position)
+    {
+    case LEFT_OPERAND:  return QString::number(leftOperand);
+    case SYMBOL:        return QString(operationSymbol);
+    case RIGHT_OPERAND: return QString::number(rightOperand);
+    case RESULT:        assert(initializedResult);
+                        return QString::number(operationResult);
+    default: return QString("Incorrect position!");
+    }
 }
 
-void OperationInfo::setOperationResult(const long long& result)
+void OperationInfo::setOperationResult(long long result)
 {
-    operationParts[3] = QString::number(result);
+    initializedResult = true;
+    operationResult = result;
 }
 
-void OperationInfo::setOperationResult(const QString& result)
+void OperationInfo::setLeftOperand(long long leftOperand)
 {
-    operationParts[3] = result;
+    this->leftOperand = leftOperand;
+}
+
+void OperationInfo::setRightOperand(long long rightOperand)
+{
+    this->rightOperand = rightOperand;
+}
+
+void OperationInfo::setOperationSymbol(QChar operationSymbol)
+{
+    this->operationSymbol = operationSymbol;
+}
+
+QDataStream& operator <<(QDataStream& out, const OperationInfo& oi)
+{
+    out << oi.getLeftOperand()
+        << oi.getOperationSymbol()
+        << oi.getRightOperand()
+        << oi.getOperationResult();
+
+    return out;
+}
+
+QDataStream& operator >>(QDataStream& in, OperationInfo& oi)
+{
+    QChar symbol;
+    qlonglong left,
+              right,
+              result;
+
+
+    in >> left >> symbol >> right >> result;
+
+    oi.setLeftOperand(left);
+    oi.setRightOperand(right);
+    oi.setOperationSymbol(symbol);
+    oi.setOperationResult(result);
+
+    return in;
 }

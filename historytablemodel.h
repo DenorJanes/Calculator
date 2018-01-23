@@ -23,6 +23,8 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     void insertOperationRecord(OperationInfo&& operationInfo);
+    bool saveHistory();
+    bool getSavedHistory();
 
 private:
     vector<OperationInfo> operationInfoSet;

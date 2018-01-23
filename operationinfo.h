@@ -3,30 +3,47 @@
 
 #include <vector>
 #include <qstring.h>
+#include <QObject>
 
 class ArithmeticUnit;
 class Command;
+class QDataStream;
 
 
-class OperationInfo   //: public std::vector<QString>
+
+class OperationInfo
 {
 public:
+    OperationInfo() = default;
     OperationInfo(ArithmeticUnit& arithmeticUnit, Command& operation);
 
-    //enum OperationParts { LEFT_OPERAND, RIGHT_OPERAND, SYMBOL, RESULT };
+    enum OperationParts { LEFT_OPERAND, SYMBOL, RIGHT_OPERAND,  RESULT };
 
-    QString getLeftOperand() { return operationParts[0]; }
-    QString getRightOperand() { return operationParts[1]; }
-    QString getOperationSymbol() { return operationParts[2]; }
-    QString getOperationResult() {return operationParts[3]; }
+    qlonglong getLeftOperand() const { return leftOperand; }
+    qlonglong getRightOperand() const { return rightOperand; }
+    qlonglong getOperationResult() const { return operationResult; }
+    QChar getOperationSymbol() const { return operationSymbol; }
 
     const QString getInfoAt(const int position) const;
 
-    void setOperationResult(const long long& result);
-    void setOperationResult(const QString& result);
+    void setOperationResult(qlonglong result);
+    void setLeftOperand(qlonglong leftOperand);
+    void setRightOperand(qlonglong rightOperand);
+    void setOperationSymbol(QChar operationSymbol);
 
 private:
-    QString operationParts[4]; // information
+    qlonglong leftOperand,
+              rightOperand,
+              operationResult;
+    QChar operationSymbol;
+
+    bool initializedResult;
 };
+Q_DECLARE_METATYPE(OperationInfo);
+
+QDataStream& operator <<(QDataStream& out, const OperationInfo& oi);
+QDataStream& operator >>(QDataStream& in, OperationInfo& oi);
+
+
 
 #endif // OPERATIONINFO_H

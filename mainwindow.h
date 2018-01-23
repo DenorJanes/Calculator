@@ -8,6 +8,7 @@
 
 class Command;
 class HistoryTableModel;
+class OperationSortFilterModel;
 
 namespace Ui {
 class MainWindow;
@@ -30,8 +31,14 @@ private:
     Ui::MainWindow *ui;
     map<COMMAND_TYPE,unique_ptr<Command>> operationSet;
     Command* currentOperation;
-    unique_ptr<HistoryTableModel> model;
+    //unique_ptr<HistoryTableModel> historyModel;
+    //unique_ptr<OperationSortFilterModel> proxyModelPositive;
+    //unique_ptr<OperationSortFilterModel> proxyModelNegative;
+    HistoryTableModel* historyModel;
+    OperationSortFilterModel* proxyModelPositive;
+    OperationSortFilterModel* proxyModelNegative;
     ArithmeticUnit arithmeticUnit;
+
 
     bool operationClicked = false;
     bool inputStarted;
@@ -63,6 +70,9 @@ public slots:
 
 private slots:
     void cancelButtonRespond();
+
+protected:
+    void closeEvent(QCloseEvent* event) override;
 
 };
 

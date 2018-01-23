@@ -8,12 +8,15 @@
 #include <assert.h>
 #include "historytablemodel.h"
 #include "operationinfo.h"
+#include "operationsortfiltermodel.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    model(new HistoryTableModel)
+    historyModel(new HistoryTableModel(this)),
+    proxyModelPositive(new OperationSortFilterModel("+",this)),
+    proxyModelNegative(new OperationSortFilterModel("-",this))
 {
     operationSet.emplace(COMMAND_TYPE::ADD, unique_ptr<Command>(new Add()));
     operationSet.emplace(COMMAND_TYPE::SUB, unique_ptr<Command>(new Sub()));
@@ -22,6 +25,10 @@ MainWindow::MainWindow(QWidget *parent) :
     initUI();
     initConnections();
     resetCalculator();
+
+    historyModel->getSavedHistory();
+    proxyModelPositive->setSourceModel(historyModel);
+    proxyModelNegative->setSourceModel(historyModel);
 }
 
 MainWindow::~MainWindow()
@@ -57,34 +64,13 @@ void MainWindow::initUI()
 
     ui->CalcTab->setTabText(0, QString("Calculator"));
     ui->CalcTab->setTabText(1, QString("History"));
+    ui->CalcTab->setTabText(2, QString("Filtered operations"));
 
     ui->resultLine->hide();
 
-    ui->historyTable->setModel(model.get());
-}
-
-void MainWindow::numberButtonRespond(const QString& number)
-{
-    if (!inputStarted)
-    {
-        inputStarted = true;
-        enableButtons(true);
-    }
-    auto numLine = ui->calculationLine;
-
-    if(operationClicked)
-    {
-        numLine->setText(number);
-        operationClicked = false;
-    }
-    else if(numLine->text() == QString("0"))
-    {
-        numLine->setText(number);
-    }
-    else
-    {
-        numLine->setText(numLine->text().append(number));
-    }
+    ui->historyTable->setModel(historyModel);
+    ui->positiveOperationsTable->setModel(proxyModelPositive);
+    ui->negativeOperationsTable->setModel(proxyModelNegative);
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
@@ -118,6 +104,38 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         }
     }
     return ui->calculationLine->eventFilter(watched, event);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if(!historyModel->saveHistory())
+        QMessageBox::warning(this,"Error","History of operations have not been saved!");
+
+    event->accept();
+}
+
+void MainWindow::numberButtonRespond(const QString& number)
+{
+    if (!inputStarted)
+    {
+        inputStarted = true;
+        enableButtons(true);
+    }
+    auto numLine = ui->calculationLine;
+
+    if(operationClicked)
+    {
+        numLine->setText(number);
+        operationClicked = false;
+    }
+    else if(numLine->text() == QString("0"))
+    {
+        numLine->setText(number);
+    }
+    else
+    {
+        numLine->setText(numLine->text().append(number));
+    }
 }
 
 void MainWindow::plusButtonRespond()
@@ -270,5 +288,5 @@ void MainWindow::processOperation()
 
     operInfo.setOperationResult(arithmeticUnit.getResult());
 
-    model->insertOperationRecord(std::move(operInfo));
+    historyModel->insertOperationRecord(std::move(operInfo));
 }

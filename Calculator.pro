@@ -32,7 +32,8 @@ SOURCES += \
     command.cpp \
     sub.cpp \
     historytablemodel.cpp \
-    operationinfo.cpp
+    operationinfo.cpp \
+    operationsortfiltermodel.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -41,7 +42,8 @@ HEADERS += \
     command.h \
     sub.h \
     historytablemodel.h \
-    operationinfo.h
+    operationinfo.h \
+    operationsortfiltermodel.h
 
 FORMS += \
         mainwindow.ui
