@@ -6,7 +6,7 @@ void Add::exec(ArithmeticUnit &arithmeticUnit)
     arithmeticUnit.setValue(arithmeticUnit.getResult() + m_operand);
 }
 
-char Add::getSymbol() const
+COMMAND_TYPE Add::getSymbol() const
 {
-    return '+';
+    return COMMAND_TYPE::ADD;
 }

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "arithmeticunit.h"
+#include "commandtypes.h"
 
 #include <QMainWindow>
 
@@ -21,7 +22,6 @@ class MainWindow;
 class MainWindow final: public QMainWindow
 {
     Q_OBJECT
-    enum class COMMAND_TYPE {ADD, SUB};
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);

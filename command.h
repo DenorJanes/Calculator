@@ -1,6 +1,8 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
+#include "commandtypes.h"
+
 class ArithmeticUnit;
 
 class Command
@@ -10,7 +12,7 @@ public:
     virtual ~Command() = default;
 
     virtual void exec(ArithmeticUnit& arithmeticUnit) = 0;
-    virtual char getSymbol() const = 0;
+    virtual COMMAND_TYPE getSymbol() const = 0;
 
     void setOperand(long long value) { m_operand = value; }
     long long getOperand() const { return m_operand; }

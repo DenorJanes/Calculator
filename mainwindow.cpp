@@ -267,7 +267,7 @@ void MainWindow::processFirstInput()
     assert(m_currentOperation != nullptr);
 
     auto number = ui->calculationLine->text().toLongLong();
-    auto isSymbolMinus = m_currentOperation->getSymbol() == '-';
+    auto isSymbolMinus = m_currentOperation->getSymbol() == COMMAND_TYPE::SUB;
 
     m_arithmeticUnit.setValue(isSymbolMinus ? (-1)*number : number);
 }

@@ -7,7 +7,7 @@ void Sub::exec(ArithmeticUnit& arithmeticUnit)
     arithmeticUnit.setValue(arithmeticUnit.getResult() - m_operand);
 }
 
-char Sub::getSymbol() const
+COMMAND_TYPE Sub::getSymbol() const
 {
-    return '-';
+    return COMMAND_TYPE::SUB;
 }

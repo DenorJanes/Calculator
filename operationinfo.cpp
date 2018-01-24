@@ -18,7 +18,7 @@ const QString OperationInfo::getInfoAt(int position) const
     switch (position)
     {
     case LEFT_OPERAND:  return QString::number(m_leftOperand);
-    case SYMBOL:        return QString(m_operationSymbol);
+    case SYMBOL:        return convertCommandTypeToString(m_operationSymbol);
     case RIGHT_OPERAND: return QString::number(m_rightOperand);
     case RESULT:        assert(m_initializedResult);
                         return QString::number(m_operationResult);
@@ -42,7 +42,7 @@ void OperationInfo::setRightOperand(long long rightOperand)
     m_rightOperand = rightOperand;
 }
 
-void OperationInfo::setOperationSymbol(QChar operationSymbol)
+void OperationInfo::setOperationSymbol(COMMAND_TYPE operationSymbol)
 {
     m_operationSymbol = operationSymbol;
 }
@@ -50,7 +50,7 @@ void OperationInfo::setOperationSymbol(QChar operationSymbol)
 QDataStream& operator <<(QDataStream& out, const OperationInfo& oi)
 {
     out << oi.getLeftOperand()
-        << oi.getOperationSymbol()
+        << convertCommandTypeToString(oi.getOperationType())
         << oi.getRightOperand()
         << oi.getOperationResult();
 
@@ -59,7 +59,7 @@ QDataStream& operator <<(QDataStream& out, const OperationInfo& oi)
 
 QDataStream& operator >>(QDataStream& in, OperationInfo& oi)
 {
-    QChar symbol;
+    QString symbol;
     qlonglong left,
               right,
               result;

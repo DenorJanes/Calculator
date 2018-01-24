@@ -1,4 +1,10 @@
 #ifndef AVAILABLEOPERATIONS_H
 #define AVAILABLEOPERATIONS_H
 
+#include <QString>
+
+
+
+QString
+
 #endif // AVAILABLEOPERATIONS_H

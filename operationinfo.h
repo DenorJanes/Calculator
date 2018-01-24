@@ -1,7 +1,9 @@
 #ifndef OPERATIONINFO_H
 #define OPERATIONINFO_H
 
-#include <qstring.h>
+#include "commandtypes.h"
+
+#include <QString>
 #include <QObject>
 
 #include <vector>
@@ -22,20 +24,20 @@ public:
     qlonglong getLeftOperand() const { return m_leftOperand; }
     qlonglong getRightOperand() const { return m_rightOperand; }
     qlonglong getOperationResult() const { return m_operationResult; }
-    QChar getOperationSymbol() const { return m_operationSymbol; }
+    COMMAND_TYPE getOperationType() const { return m_operationSymbol; }
 
     const QString getInfoAt(const int position) const;
 
     void setOperationResult(qlonglong result);
     void setLeftOperand(qlonglong leftOperand);
     void setRightOperand(qlonglong rightOperand);
-    void setOperationSymbol(QChar operationSymbol);
+    void setOperationSymbol(COMMAND_TYPE operationSymbol);
 
 private:
     qlonglong m_leftOperand{},
               m_rightOperand{},
               m_operationResult{};
-    QChar m_operationSymbol{};
+    COMMAND_TYPE m_operationSymbol{};
 
     bool m_initializedResult{};
 };
