@@ -1,28 +1,28 @@
 #ifndef OPERATIONINFO_H
 #define OPERATIONINFO_H
 
-#include <vector>
 #include <qstring.h>
 #include <QObject>
+
+#include <vector>
 
 class ArithmeticUnit;
 class Command;
 class QDataStream;
 
 
-
 class OperationInfo
 {
 public:
+    enum OperationParts { LEFT_OPERAND, SYMBOL, RIGHT_OPERAND,  RESULT };
+
     OperationInfo() = default;
     OperationInfo(ArithmeticUnit& arithmeticUnit, Command& operation);
 
-    enum OperationParts { LEFT_OPERAND, SYMBOL, RIGHT_OPERAND,  RESULT };
-
-    qlonglong getLeftOperand() const { return leftOperand; }
-    qlonglong getRightOperand() const { return rightOperand; }
-    qlonglong getOperationResult() const { return operationResult; }
-    QChar getOperationSymbol() const { return operationSymbol; }
+    qlonglong getLeftOperand() const { return m_leftOperand; }
+    qlonglong getRightOperand() const { return m_rightOperand; }
+    qlonglong getOperationResult() const { return m_operationResult; }
+    QChar getOperationSymbol() const { return m_operationSymbol; }
 
     const QString getInfoAt(const int position) const;
 
@@ -32,12 +32,12 @@ public:
     void setOperationSymbol(QChar operationSymbol);
 
 private:
-    qlonglong leftOperand,
-              rightOperand,
-              operationResult;
-    QChar operationSymbol;
+    qlonglong m_leftOperand{},
+              m_rightOperand{},
+              m_operationResult{};
+    QChar m_operationSymbol{};
 
-    bool initializedResult;
+    bool m_initializedResult{};
 };
 Q_DECLARE_METATYPE(OperationInfo);
 

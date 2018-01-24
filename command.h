@@ -10,13 +10,13 @@ public:
     virtual ~Command() = default;
 
     virtual void exec(ArithmeticUnit& arithmeticUnit) = 0;
-    virtual char getSymbol() = 0;
+    virtual char getSymbol() const = 0;
 
-    void setOperand(long long value) { operand = value; }
-    long long getOperand() { return operand; }
+    void setOperand(long long value) { m_operand = value; }
+    long long getOperand() const { return m_operand; }
 
 protected:
-    long long operand = 0;
+    long long m_operand{};
 };
 
 #endif // COMMAND_H

@@ -1,25 +1,25 @@
 #include "operationsortfiltermodel.h"
+
 #include "operationinfo.h"
 
 OperationSortFilterModel::OperationSortFilterModel(QString operation, QObject *parent):
     QSortFilterProxyModel(parent),
-    operationSymbol(operation)
+    m_operationSymbol(operation)
 {}
 
 
 
 bool OperationSortFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    QModelIndex index = sourceModel()->index(sourceRow,filterKeyColumn(),sourceParent);
-    QVariant v = sourceModel()->index(sourceRow,-1,sourceParent);
+    auto index = sourceModel()->index(sourceRow,filterKeyColumn(),sourceParent);
 
     if(index.isValid())
     {
-        QVariant variant = sourceModel()->data(index,Qt::UserRole);
+        auto variant = sourceModel()->data(index,Qt::UserRole);
         if(variant.canConvert<OperationInfo>())
         {
-            OperationInfo operation = variant.value<OperationInfo>();
-            return operation.getOperationSymbol() == operationSymbol;
+            auto&& operation = variant.value<OperationInfo>();
+            return operation.getOperationSymbol() == m_operationSymbol;
         }
     }
      return false;

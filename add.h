@@ -3,14 +3,11 @@
 
 #include "command.h"
 
-class Add : public Command
+class Add final: public Command
 {
 public:
-    Add() = default;
-    ~Add() = default;
-
     virtual void exec(ArithmeticUnit &arithmeticUnit) override;
-    virtual char getSymbol() override;
+    virtual char getSymbol() const override;
 };
 
 #endif // ADD_H

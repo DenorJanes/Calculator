@@ -28,7 +28,7 @@
       </property>
       <widget class="QWidget" name="Caclulator">
        <attribute name="title">
-        <string>Tab 2</string>
+        <string>Calculator</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
         <item row="1" column="0">
@@ -58,7 +58,7 @@
               <number>10</number>
              </property>
              <item row="0" column="2">
-              <widget class="QPushButton" name="Button9">
+              <widget class="QPushButton" name="button9">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -71,7 +71,7 @@
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QPushButton" name="Button8">
+              <widget class="QPushButton" name="button8">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -84,7 +84,7 @@
               </widget>
              </item>
              <item row="0" column="0">
-              <widget class="QPushButton" name="Button7">
+              <widget class="QPushButton" name="button7">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -97,7 +97,7 @@
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QPushButton" name="Button5">
+              <widget class="QPushButton" name="button5">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -110,7 +110,7 @@
               </widget>
              </item>
              <item row="1" column="0">
-              <widget class="QPushButton" name="Button4">
+              <widget class="QPushButton" name="button4">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -123,7 +123,7 @@
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QPushButton" name="Button2">
+              <widget class="QPushButton" name="button2">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -136,7 +136,7 @@
               </widget>
              </item>
              <item row="2" column="2">
-              <widget class="QPushButton" name="Button3">
+              <widget class="QPushButton" name="button3">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -149,7 +149,7 @@
               </widget>
              </item>
              <item row="1" column="2">
-              <widget class="QPushButton" name="Button6">
+              <widget class="QPushButton" name="button6">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -162,7 +162,7 @@
               </widget>
              </item>
              <item row="2" column="0">
-              <widget class="QPushButton" name="Button1">
+              <widget class="QPushButton" name="button1">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -177,7 +177,7 @@
             </layout>
            </item>
            <item>
-            <widget class="QPushButton" name="Button0">
+            <widget class="QPushButton" name="button0">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
                <horstretch>0</horstretch>
@@ -192,6 +192,25 @@
           </layout>
          </widget>
         </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QLineEdit" name="calculationLine">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="1">
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <property name="spacing">
@@ -203,7 +222,7 @@
              <number>10</number>
             </property>
             <item row="0" column="0">
-             <widget class="QPushButton" name="ButtonCancel">
+             <widget class="QPushButton" name="buttonCancel">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -241,7 +260,7 @@
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QPushButton" name="ButtonMinus">
+             <widget class="QPushButton" name="buttonMinus">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -268,7 +287,7 @@
            </layout>
           </item>
           <item>
-           <widget class="QPushButton" name="ButtonEqual">
+           <widget class="QPushButton" name="buttonEqual">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -294,56 +313,17 @@
           </item>
          </layout>
         </item>
-        <item row="0" column="0" colspan="2">
-         <widget class="QLineEdit" name="calculationLine">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0" colspan="2">
          <widget class="QLineEdit" name="resultLine">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="font">
            <font>
+            <pointsize>8</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
-          </property>
-          <property name="dragEnabled">
-           <bool>false</bool>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-          <property name="clearButtonEnabled">
-           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -351,7 +331,7 @@
       </widget>
       <widget class="QWidget" name="History">
        <attribute name="title">
-        <string>Tab 1</string>
+        <string>History</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
@@ -371,7 +351,7 @@
       </widget>
       <widget class="QWidget" name="SortedHistory">
        <attribute name="title">
-        <string>Page</string>
+        <string>Filtered operations</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="0">

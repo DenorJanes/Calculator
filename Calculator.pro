@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-CONFIG  += C++14
+CONFIG += c++14
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -29,7 +29,6 @@ SOURCES += \
         mainwindow.cpp \
     add.cpp \
     arithmeticunit.cpp \
-    command.cpp \
     sub.cpp \
     historytablemodel.cpp \
     operationinfo.cpp \
@@ -43,7 +42,8 @@ HEADERS += \
     sub.h \
     historytablemodel.h \
     operationinfo.h \
-    operationsortfiltermodel.h
+    operationsortfiltermodel.h \
+    availableoperations.h
 
 FORMS += \
         mainwindow.ui

@@ -1,23 +1,21 @@
 #ifndef ARITHMETICUNIT_H
 #define ARITHMETICUNIT_H
-#include <memory>
 
 
-class ArithmeticUnit
+class ArithmeticUnit final
 {
 public:
     ArithmeticUnit() = default;
     ~ArithmeticUnit() = default;
 
-    long long getResult();
+    long long getResult() const;
     void reset();
     void setValue(long long value);
-    bool isInitialized() { return initialized; }
+    bool isInitialized() const { return m_initialized; }
 
 private:
-    long long result;
-    bool initialized;
-
+    long long m_result{};
+    bool m_initialized{};
 };
 
 #endif // ARITHMETICUNIT_H

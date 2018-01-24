@@ -1,14 +1,14 @@
 #include "arithmeticunit.h"
 
-long long ArithmeticUnit::getResult() { return result; }
+long long ArithmeticUnit::getResult() const { return m_result; }
 void ArithmeticUnit::setValue(long long value)
 {
-    result = value;
-    initialized = true;
+    m_result = value;
+    m_initialized = true;
 }
 void ArithmeticUnit::reset()
 {
-    result = 0;
-    initialized = false;
+    m_result = 0;
+    m_initialized = false;
 }
 

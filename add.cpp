@@ -3,10 +3,10 @@
 
 void Add::exec(ArithmeticUnit &arithmeticUnit)
 {
-    arithmeticUnit.setValue(arithmeticUnit.getResult() + operand);
+    arithmeticUnit.setValue(arithmeticUnit.getResult() + m_operand);
 }
 
-char Add::getSymbol()
+char Add::getSymbol() const
 {
     return '+';
 }

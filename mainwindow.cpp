@@ -1,47 +1,48 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include "command.h"
 #include "add.h"
 #include "sub.h"
-#include <QKeyEvent>
-#include <QMessageBox>
-#include <assert.h>
 #include "historytablemodel.h"
 #include "operationinfo.h"
 #include "operationsortfiltermodel.h"
 
+#include <QKeyEvent>
+#include <QMessageBox>
+
+#include <cassert>
+
+using std::make_unique;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    historyModel(new HistoryTableModel(this)),
-    proxyModelPositive(new OperationSortFilterModel("+",this)),
-    proxyModelNegative(new OperationSortFilterModel("-",this))
+    m_historyModel(new HistoryTableModel(this)),
+    m_proxyModelPositive(new OperationSortFilterModel("+",this)),
+    m_proxyModelNegative(new OperationSortFilterModel("-",this))
 {
-    operationSet.emplace(COMMAND_TYPE::ADD, unique_ptr<Command>(new Add()));
-    operationSet.emplace(COMMAND_TYPE::SUB, unique_ptr<Command>(new Sub()));
-    currentOperation = getOperation(COMMAND_TYPE::ADD);
+    m_operationSet.emplace(COMMAND_TYPE::ADD, make_unique<Add>());
+    m_operationSet.emplace(COMMAND_TYPE::SUB, make_unique<Sub>());
+    m_currentOperation = &getOperation(COMMAND_TYPE::ADD);
 
     initUI();
     initConnections();
     resetCalculator();
 
-    historyModel->getSavedHistory();
-    proxyModelPositive->setSourceModel(historyModel);
-    proxyModelNegative->setSourceModel(historyModel);
+    m_historyModel->getSavedHistory();
+    m_proxyModelPositive->setSourceModel(m_historyModel);
+    m_proxyModelNegative->setSourceModel(m_historyModel);
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
+MainWindow::~MainWindow() = default;
 
 void MainWindow::initConnections()
 {
     connect(ui->buttonPlus, &QPushButton::clicked,this,&MainWindow::plusButtonRespond);
-    connect(ui->ButtonMinus, &QPushButton::clicked,this,&MainWindow::minusButtonRespond);
-    connect(ui->ButtonEqual, &QPushButton::clicked,this,&MainWindow::equalButtonRespond);
-    connect(ui->ButtonCancel, &QPushButton::clicked, this, &MainWindow::cancelButtonRespond);
+    connect(ui->buttonMinus, &QPushButton::clicked,this,&MainWindow::minusButtonRespond);
+    connect(ui->buttonEqual, &QPushButton::clicked,this,&MainWindow::equalButtonRespond);
+    connect(ui->buttonCancel, &QPushButton::clicked, this, &MainWindow::cancelButtonRespond);
 
     auto buttonList = ui->NumbersFrame->findChildren<QPushButton*>();
     for(auto button: buttonList)
@@ -59,18 +60,14 @@ void MainWindow::initUI()
 {
     ui->setupUi(this);
 
-    ui->calculationLine->setValidator( new QIntValidator(-INFINITY, INFINITY, this) );
+    ui->calculationLine->setValidator(new QIntValidator(-INFINITY, INFINITY, this));
     ui->calculationLine->installEventFilter(this);
-
-    ui->CalcTab->setTabText(0, QString("Calculator"));
-    ui->CalcTab->setTabText(1, QString("History"));
-    ui->CalcTab->setTabText(2, QString("Filtered operations"));
 
     ui->resultLine->hide();
 
-    ui->historyTable->setModel(historyModel);
-    ui->positiveOperationsTable->setModel(proxyModelPositive);
-    ui->negativeOperationsTable->setModel(proxyModelNegative);
+    ui->historyTable->setModel(m_historyModel);
+    ui->positiveOperationsTable->setModel(m_proxyModelPositive);
+    ui->negativeOperationsTable->setModel(m_proxyModelNegative);
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
@@ -86,19 +83,19 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
          case Qt::Key_Minus: minusButtonRespond(); return true;
          case Qt::Key_Enter:
          case Qt::Key_Equal:
-         case Qt::Key_Return: if(inputStarted) equalButtonRespond(); return true;
+         case Qt::Key_Return: if(m_inputStarted) equalButtonRespond(); return true;
          case Qt::Key_Backspace: removeDigit(1); return true;
 
-         case Qt::Key_0: emit ui->Button0->clicked(true); return true;
-         case Qt::Key_1: emit ui->Button1->clicked(true); return true;
-         case Qt::Key_2: emit ui->Button2->clicked(true); return true;
-         case Qt::Key_3: emit ui->Button3->clicked(true); return true;
-         case Qt::Key_4: emit ui->Button4->clicked(true); return true;
-         case Qt::Key_5: emit ui->Button5->clicked(true); return true;
-         case Qt::Key_6: emit ui->Button6->clicked(true); return true;
-         case Qt::Key_7: emit ui->Button7->clicked(true); return true;
-         case Qt::Key_8: emit ui->Button8->clicked(true); return true;
-         case Qt::Key_9: emit ui->Button9->clicked(true); return true;
+         case Qt::Key_0: emit ui->button0->clicked(true); return true;
+         case Qt::Key_1: emit ui->button1->clicked(true); return true;
+         case Qt::Key_2: emit ui->button2->clicked(true); return true;
+         case Qt::Key_3: emit ui->button3->clicked(true); return true;
+         case Qt::Key_4: emit ui->button4->clicked(true); return true;
+         case Qt::Key_5: emit ui->button5->clicked(true); return true;
+         case Qt::Key_6: emit ui->button6->clicked(true); return true;
+         case Qt::Key_7: emit ui->button7->clicked(true); return true;
+         case Qt::Key_8: emit ui->button8->clicked(true); return true;
+         case Qt::Key_9: emit ui->button9->clicked(true); return true;
 
          default: QMessageBox::warning(this,"Incorrect Input","Only values allowed"); return false;
         }
@@ -108,7 +105,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if(!historyModel->saveHistory())
+    if(!m_historyModel->saveHistory())
         QMessageBox::warning(this,"Error","History of operations have not been saved!");
 
     event->accept();
@@ -116,17 +113,17 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::numberButtonRespond(const QString& number)
 {
-    if (!inputStarted)
+    if (!m_inputStarted)
     {
-        inputStarted = true;
+        m_inputStarted = true;
         enableButtons(true);
     }
     auto numLine = ui->calculationLine;
 
-    if(operationClicked)
+    if(m_operationClicked)
     {
         numLine->setText(number);
-        operationClicked = false;
+        m_operationClicked = false;
     }
     else if(numLine->text() == QString("0"))
     {
@@ -140,39 +137,39 @@ void MainWindow::numberButtonRespond(const QString& number)
 
 void MainWindow::plusButtonRespond()
 {
-    if(!operationClicked && inputStarted)
+    if(!m_operationClicked && m_inputStarted)
     {
         processButton();
     }
 
-    currentOperation = getOperation(COMMAND_TYPE::ADD);
+    m_currentOperation = &getOperation(COMMAND_TYPE::ADD);
     ui->calculationLine->setFocus();
 }
 
 void MainWindow::minusButtonRespond()
 {
-    if(!operationClicked && inputStarted)
+    if(!m_operationClicked && m_inputStarted)
     {
         processButton();
     }
 
-    currentOperation = getOperation(COMMAND_TYPE::SUB);
+    m_currentOperation = &getOperation(COMMAND_TYPE::SUB);
     ui->calculationLine->setFocus();
 }
 
 void MainWindow::equalButtonRespond()
 {
-    if(!operationClicked)
+    if(!m_operationClicked)
     {
-        if(isNumberCorrect())
+        if(tryConvertNumber(ui->calculationLine->text()))
         {
             calculate();
-            ui->resultLine->setText(QString::number(arithmeticUnit.getResult()));
+            ui->resultLine->setText(QString::number(m_arithmeticUnit.getResult()));
         }
     }
-    else ui->resultLine->setText(QString::number(arithmeticUnit.getResult()));
+    else ui->resultLine->setText(QString::number(m_arithmeticUnit.getResult()));
 
-    currentOperation = getOperation(COMMAND_TYPE::ADD);
+    m_currentOperation = &getOperation(COMMAND_TYPE::ADD);
 
     ui->resultLine->show();
     resetCalculator();
@@ -199,10 +196,10 @@ void MainWindow::cancelButtonRespond()
 
 void MainWindow::resetCalculator()
 {
-    inputStarted = false;
-    operationClicked = false;
+    m_inputStarted = false;
+    m_operationClicked = false;
 
-    arithmeticUnit.reset();
+    m_arithmeticUnit.reset();
 
     ui->calculationLine->setText(QString("0"));
 
@@ -212,18 +209,16 @@ void MainWindow::resetCalculator()
 void MainWindow::enableButtons(bool flag)
 {
     ui->buttonPlus->setEnabled(flag);
-    ui->ButtonMinus->setEnabled(flag);
-    ui->ButtonEqual->setEnabled(flag);
+    ui->buttonMinus->setEnabled(flag);
+    ui->buttonEqual->setEnabled(flag);
 }
 
 void MainWindow::processButton()
 {
-    auto numLine = ui->calculationLine;
-
-    if(isNumberCorrect())
+    if(tryConvertNumber(ui->calculationLine->text()))
     {
         calculate();
-        ui->calculationLine->setText(QString::number(arithmeticUnit.getResult()));
+        ui->calculationLine->setText(QString::number(m_arithmeticUnit.getResult()));
     }
     else
     {
@@ -231,14 +226,13 @@ void MainWindow::processButton()
         ui->resultLine->show();
     }
 
-    operationClicked = true;
+    m_operationClicked = true;
 }
 
-bool MainWindow::isNumberCorrect()
+bool MainWindow::tryConvertNumber(const QString& numText)
 {
-    QString numText = ui->calculationLine->text();
     auto ok = true;
-    qlonglong num = numText.toLongLong(&ok);
+    auto num = numText.toLongLong(&ok);
 
     if(!ok)
          /*dynamic_cast<Div>(operation) == nullptr*/
@@ -249,16 +243,16 @@ bool MainWindow::isNumberCorrect()
     return 1;
 }
 
-Command* MainWindow::getOperation(COMMAND_TYPE operation)
+Command& MainWindow::getOperation(COMMAND_TYPE operation)
 {
-    assert(operationSet.find(operation) != operationSet.end());
+    assert(m_operationSet.find(operation) != m_operationSet.end());
 
-    return operationSet[operation].get();
+    return *m_operationSet[operation];
 }
 
 void MainWindow::calculate()
 {
-    if(!arithmeticUnit.isInitialized())
+    if(!m_arithmeticUnit.isInitialized())
     {
         processFirstInput();
     }
@@ -270,23 +264,25 @@ void MainWindow::calculate()
 
 void MainWindow::processFirstInput()
 {
-    long long number;
-    number = ui->calculationLine->text().toLongLong();
+    assert(m_currentOperation != nullptr);
 
-    arithmeticUnit.setValue(
-                (currentOperation->getSymbol() == '-') ? (-1)*number : number
-                );
+    auto number = ui->calculationLine->text().toLongLong();
+    auto isSymbolMinus = m_currentOperation->getSymbol() == '-';
+
+    m_arithmeticUnit.setValue(isSymbolMinus ? (-1)*number : number);
 }
 
 void MainWindow::processOperation()
 {
-    currentOperation->setOperand(ui->calculationLine->text().toLongLong());
+    assert(m_currentOperation != nullptr);
 
-    OperationInfo operInfo (arithmeticUnit,*currentOperation);
+    m_currentOperation->setOperand(ui->calculationLine->text().toLongLong());
 
-    currentOperation->exec(arithmeticUnit);
+    OperationInfo operInfo (m_arithmeticUnit,*m_currentOperation);
 
-    operInfo.setOperationResult(arithmeticUnit.getResult());
+    m_currentOperation->exec(m_arithmeticUnit);
 
-    historyModel->insertOperationRecord(std::move(operInfo));
+    operInfo.setOperationResult(m_arithmeticUnit.getResult());
+
+    m_historyModel->insertOperationRecord(std::move(operInfo));
 }

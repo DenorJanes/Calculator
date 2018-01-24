@@ -4,21 +4,21 @@
 #include <QSortFilterProxyModel>
 
 
-class OperationSortFilterModel : public QSortFilterProxyModel
+class OperationSortFilterModel final: public QSortFilterProxyModel
 {
     Q_OBJECT
 
-     public:
-         OperationSortFilterModel(QString operation, QObject *parent = 0);
+public:
+        OperationSortFilterModel(QString operation, QObject *parent = nullptr);
 
-         QString getOperationSymbol() { return operationSymbol; }
-         void setOprationSymbol(QChar symbol) { operationSymbol = symbol; }
+        QString getOperationSymbol() const { return m_operationSymbol; }
+        void setOprationSymbol(QChar symbol) { m_operationSymbol = symbol; }
 
-     protected:
-         bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
-         //bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+private:
+        virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
-         QString operationSymbol;
+private:
+        QString m_operationSymbol{};
 };
 
 #endif // OPERATIONSORTFILTERMODEL_H

@@ -4,13 +4,11 @@
 #include "command.h"
 
 
-class Sub : public Command
+class Sub final: public Command
 {
 public:
     virtual void exec(ArithmeticUnit &arithmeticUnit) override;
-    virtual char getSymbol() override;
-
-    using Command::Command;
+    virtual char getSymbol() const override;
 };
 
 #endif // SUB_H
