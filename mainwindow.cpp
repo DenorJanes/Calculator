@@ -16,11 +16,11 @@
 using std::make_unique;
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    m_historyModel(new HistoryTableModel(this)),
-    m_proxyModelPositive(new OperationSortFilterModel("+",this)),
-    m_proxyModelNegative(new OperationSortFilterModel("-",this))
+    QMainWindow(parent)
+    ,ui(new Ui::MainWindow)
+    ,m_historyModel(new HistoryTableModel(this))
+    ,m_proxyModelPositive(new OperationSortFilterModel(COMMAND_TYPE::ADD,this))
+    ,m_proxyModelNegative(new OperationSortFilterModel(COMMAND_TYPE::SUB,this))
 {
     m_operationSet.emplace(COMMAND_TYPE::ADD, make_unique<Add>());
     m_operationSet.emplace(COMMAND_TYPE::SUB, make_unique<Sub>());

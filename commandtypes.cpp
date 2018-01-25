@@ -4,7 +4,7 @@
 
 #include <cassert>
 
-const QString& convertCommandTypeToString(COMMAND_TYPE operation)
+QString convertCommandTypeToString(COMMAND_TYPE operation)
 {
     switch (operation)
     {

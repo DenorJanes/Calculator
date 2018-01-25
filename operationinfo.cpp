@@ -59,17 +59,19 @@ QDataStream& operator <<(QDataStream& out, const OperationInfo& oi)
 
 QDataStream& operator >>(QDataStream& in, OperationInfo& oi)
 {
-    QString symbol;
+    QString operation;
     qlonglong left,
               right,
               result;
 
 
-    in >> left >> symbol >> right >> result;
+    in >> left >> operation >> right >> result;
+
+    auto operationType = convertStringToCommandType(operation);
 
     oi.setLeftOperand(left);
     oi.setRightOperand(right);
-    oi.setOperationSymbol(symbol);
+    oi.setOperationSymbol(operationType);
     oi.setOperationResult(result);
 
     return in;

@@ -2,7 +2,7 @@
 
 #include "operationinfo.h"
 
-OperationSortFilterModel::OperationSortFilterModel(QString operation, QObject *parent):
+OperationSortFilterModel::OperationSortFilterModel(COMMAND_TYPE operation, QObject *parent):
     QSortFilterProxyModel(parent),
     m_operationSymbol(operation)
 {}
@@ -19,7 +19,7 @@ bool OperationSortFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex
         if(variant.canConvert<OperationInfo>())
         {
             auto&& operation = variant.value<OperationInfo>();
-            return operation.getOperationSymbol() == m_operationSymbol;
+            return operation.getOperationType() == m_operationSymbol;
         }
     }
      return false;

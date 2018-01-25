@@ -5,7 +5,7 @@ class QString;
 
 enum class COMMAND_TYPE {ADD, SUB, NO_SYMBOL};
 
-const QString& convertCommandTypeToString(COMMAND_TYPE operation);
+QString convertCommandTypeToString(COMMAND_TYPE operation);
 COMMAND_TYPE convertStringToCommandType(const QString& operation);
 
 
