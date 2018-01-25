@@ -21,6 +21,8 @@ public:
     OperationInfo() = default;
     OperationInfo(ArithmeticUnit& arithmeticUnit, Command& operation);
 
+    OperationInfo& operator= (const OperationInfo&) = delete;
+
     qlonglong getLeftOperand() const { return m_leftOperand; }
     qlonglong getRightOperand() const { return m_rightOperand; }
     qlonglong getOperationResult() const { return m_operationResult; }

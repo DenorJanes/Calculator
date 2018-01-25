@@ -5,7 +5,7 @@
 
 class Add final: public Command
 {
-public:
+private:
     virtual void exec(ArithmeticUnit &arithmeticUnit) override;
     virtual COMMAND_TYPE getSymbol() const override;
 };
